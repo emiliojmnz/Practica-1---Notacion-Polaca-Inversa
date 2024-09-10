@@ -3,6 +3,7 @@ Programación 9292
 Práctica 1 - Notación Polaca Inversa
 autores: Jiménez Malvaez Raúl Emilio
 Pichardo Elizondo Tania Janice
+Stephania Rendón González
 """
 #Creamos un __main__, de manera que el codigo solo de inicio si se ejecuta directamente
 if __name__ == '__main__':
