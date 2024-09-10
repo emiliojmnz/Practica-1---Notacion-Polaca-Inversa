@@ -1,0 +1,80 @@
+"""
+Programación 9292
+Práctica 1 - Notación Polaca Inversa
+autores: Jiménez Malvaez Raúl Emilio
+Pichardo Elizondo Tania Janice
+"""
+#Creamos un __main__, de manera que el codigo solo de inicio si se ejecuta directamente
+if __name__ == '__main__':
+
+    #La función de este print es unicamente imprimir un string a forma de "titulo"
+    print("NOTACION POLACA INVERSA")
+
+    #Creamos una lista que incluya a todos nuestros operadores y otra que incluya los numeros
+    operadores = ["+", "-", "*", "/", "**", "(", ")"]
+    numeros = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+    #Posteriormente creamos un diccionario donde estableceremos el nivel de prioridad de cada operador aritmético
+    jerarquia = {'+': 1, '-': 1, '*': 2, '/': 2, '**': 3, '(': 0, ')': 0}
+
+    #Declaramos cuales seran los valores permitidos, para evitar que el usuario ingrese otros valores
+    caracteres_validos = "0123456789()+-*/ "
+
+    #Creamos un ciclo while que notifique si el usuario ingreso valores no permitidos
+    while True:
+        operacion = input("Ingresa la operacion aritmetica que va a transformarse a Notación Polaca Inversa")
+        if all(char in caracteres_validos for char in operacion):
+            break
+        #Si se ingresaron valores no permitidos, vuelve a pedir que se ingrese la ecuación
+        else:
+            print("Solo se permiten números, espacio, y operadores aritmeticos")
+            operacion = input("Ingresa la operacion aritmetica que va a transformarse a Notación Polaca Inversa")
+            if all(char in caracteres_validos for char in operacion):
+                break
+
+    #Separamos la operación en cada uno de sus carácteres
+    operacion_seg=operacion.split()
+
+    #Creamos una lista dentro de la cuál vamos a ingresar los operadores de la operación
+    operadores_operacion = []
+    for char in operacion_seg:
+        if char in operadores:
+            operadores_operacion.append(char)
+
+    #Creamos una lista dentro de la cuál vamos a ingresar los números de la operación
+    numeros_operacion = []
+    for char in operacion_seg:
+        if char not in operadores:
+            numeros_operacion.append(char)
+
+    #Esta pila tiene el propósito de almacenar valores que se utilizaran más adelante
+    pila = []
+    #NPI guardará los valores que van a imprimirse, y en el orden adecuado
+    NPI = []
+    #A través de este for y los condicionales, evaluamos cada parte de la operación, los almacenamos o los guardamos
+    for char in operacion:
+        # Si el carácter es un número, se pasa directamente a NPI
+        if char in numeros:
+            NPI.append(char)
+        #Si es operador, se almacena en la pila
+        elif char in operadores:
+            while pila and pila[-1] != '(' and jerarquia[char] <= jerarquia[pila[-1]]:
+                NPI.append(pila.pop())
+            pila.append(char)
+        #Si es paréntesis, se envía a la pila
+        elif char == '(':
+            pila.append(char)
+        elif char == ')':
+            while pila and pila[-1] != '(':
+                NPI.append(pila.pop())
+            pila.pop()
+    #Evaluamos cada carácter en la pila y los imprimimos desde el final, sin tomar en cuenta los paréntesis
+    while pila:
+        if pila[-1] != '(' and pila[-1] != ')':
+            NPI.append(pila.pop())
+        else:
+            pila.pop()
+
+    #Finalmente, imprimimos el resultado NPI, separando cada carácter con ' '
+    salida = ' '.join(NPI)
+    print(salida)
